@@ -10,11 +10,12 @@ const Header = (props) => {
 
 const Part = (props) => {
   return (
-    <p>{props.part} {props.ex}</p>
+    <p>{props.part} {props.exercises}</p>
   )
 }
 
 const Content = (props) => {
+  console.log(props)
   return (
     <div>
       <Part part={props.parts[0].part} exercises={props.parts[0].exercises}/>
