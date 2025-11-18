@@ -1,23 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import ContactForm from './components/ContactForm';
 import Persons from './components/Persons';
 import FilterContacts from './components/FilterContacts';
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchStr, setSearchStr] = useState('');
 
+  // fetch persons from server
+  useEffect(() => {
+    console.log('Effect running');
+    axios
+     .get('http://localhost:3001/persons')
+     .then(res =>{
+      console.log('Promise fulfilled');
+      setPersons(res.data);
+     })
+  }, []);
+
+  console.log('Render', persons.length, 'persons')
+
   // show persons after search applied
   const filteredPersons = persons.filter(person => {
     return person.name.toLowerCase().startsWith(searchStr);
-  });  
+  });
 
   const handleNameChange = (e) => {
     setNewName(e.target.value);
