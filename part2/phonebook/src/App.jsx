@@ -44,18 +44,40 @@ const App = () => {
   const addPerson = (e) => {
     e.preventDefault();
 
-    const dupe = persons.find(person => person.name === newName);
-
-    if (dupe) {
-      alert(`${newName} is already added to phonebook`);
-      setNewName('');
-      setNewNumber('');
-      return;
-    }
     const personObj = {
       name: newName,
       number: newNumber
     };
+
+    const dupe = persons.find(person => person.name === newName);
+
+    // if (dupe) {
+    //   alert(`${newName} is already added to phonebook`);
+    //   setNewName('');
+    //   setNewNumber('');
+    //   return;
+    // }
+    if (dupe) {
+      if (window.confirm(`${dupe.name} is already added to phonebook. replace the old number with a new one?`)) {
+        personService.updatePerson(dupe.id, personObj)
+          .then(res => {
+            console.log(res);
+            const newPersons = persons.map(p => {
+              return {
+                ...p,
+                number: p.id === res.id ? res.number : p.number
+              }
+            });
+            console.log(newPersons);
+            setPersons(newPersons);
+          })
+      }
+      setNewName('');
+      setNewNumber('');
+      return;
+    }
+
+    
     personService.createNewPerson(personObj)
       .then(returnedPerson =>{
         console.log(returnedPerson);
