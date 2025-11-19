@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import personService from './services/persons';
 import ContactForm from './components/ContactForm';
 import Persons from './components/Persons';
 import FilterContacts from './components/FilterContacts';
@@ -13,15 +13,15 @@ const App = () => {
   // fetch persons from server
   useEffect(() => {
     console.log('Effect running');
-    axios
-     .get('http://localhost:3001/persons')
-     .then(res =>{
-      console.log('Promise fulfilled');
-      setPersons(res.data);
-     })
+    personService.getAllPersons()
+      .then(initialPersons => {
+        console.log('Promise fulfilled');
+        setPersons(initialPersons);
+      })
+
   }, []);
 
-  console.log('Render', persons.length, 'persons')
+  console.log('Render', persons)
 
   // show persons after search applied
   const filteredPersons = persons.filter(person => {
@@ -56,9 +56,13 @@ const App = () => {
       name: newName,
       number: newNumber
     };
-    setPersons(persons.concat(personObj));
-    setNewName('');
-    setNewNumber('');
+    personService.createNewPerson(personObj)
+      .then(returnedPerson =>{
+        console.log(returnedPerson);
+        setPersons(persons.concat(returnedPerson));
+        setNewName('');
+        setNewNumber('');
+      })
   };
 
   return (
@@ -74,7 +78,7 @@ const App = () => {
         handleNumber={handleNumChange} 
       />
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons} />
+      <Persons persons={filteredPersons} setPersons={setPersons} />
     </div>
   )
 }
