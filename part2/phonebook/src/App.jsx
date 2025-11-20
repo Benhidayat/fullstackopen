@@ -3,12 +3,14 @@ import personService from './services/persons';
 import ContactForm from './components/ContactForm';
 import Persons from './components/Persons';
 import FilterContacts from './components/FilterContacts';
+import Notification from './components/Notification';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchStr, setSearchStr] = useState('');
+  const [notifMessage, setNotifMessage] = useState(null);
 
   // fetch persons from server
   useEffect(() => {
@@ -76,7 +78,6 @@ const App = () => {
       setNewNumber('');
       return;
     }
-
     
     personService.createNewPerson(personObj)
       .then(returnedPerson =>{
@@ -84,12 +85,17 @@ const App = () => {
         setPersons(persons.concat(returnedPerson));
         setNewName('');
         setNewNumber('');
+        setNotifMessage(`Added ${returnedPerson.name}`);
+        setTimeout(() => {
+          setNotifMessage(null)
+        }, 5000);
       })
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notifMessage} />
       <FilterContacts searchStr={searchStr} handleSearch={handleSearchChange} />
       <h3>Add a new</h3>
       <ContactForm 
