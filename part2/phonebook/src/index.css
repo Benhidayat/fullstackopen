@@ -5,13 +5,21 @@
     scroll-behavior: smooth;
 }
 
-.notification {
-    color: green;
+.green-msg,
+.red-msg {
     background-color: lightgrey;
     font-size: 20px;
     border-style: solid;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+.green-msg {
+    color: green;
+}
+
+.red-msg {
+    color: red;
 }
 

@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [searchStr, setSearchStr] = useState('');
   const [notifMessage, setNotifMessage] = useState(null);
+  const [errSelector, setErrSelector] = useState(true);
 
   // fetch persons from server
   useEffect(() => {
@@ -73,6 +74,13 @@ const App = () => {
             console.log(newPersons);
             setPersons(newPersons);
           })
+          .catch(error => {
+            setNotifMessage(`${dupe.name} has already been removed from the server`);
+            setErrSelector(true);
+            setTimeout(() => {
+              setNotifMessage(null)
+            }, 5000);
+          })
       }
       setNewName('');
       setNewNumber('');
@@ -86,6 +94,7 @@ const App = () => {
         setNewName('');
         setNewNumber('');
         setNotifMessage(`Added ${returnedPerson.name}`);
+        setErrSelector(false);
         setTimeout(() => {
           setNotifMessage(null)
         }, 5000);
@@ -95,7 +104,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notifMessage} />
+      <Notification message={notifMessage} selector={errSelector} />
       <FilterContacts searchStr={searchStr} handleSearch={handleSearchChange} />
       <h3>Add a new</h3>
       <ContactForm 
