@@ -1,8 +1,10 @@
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
+const { json } = require('stream/consumers');
 const PORT = 3001;
 
-const persons = [
+let persons = [
     { 
       "id": "1",
       "name": "Arto Hellas", 
@@ -25,6 +27,12 @@ const persons = [
     }
 ]
 
+app.use(express.json());
+
+// define body token
+morgan.token('body', (req, res) => JSON.stringify(req.body));
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'));
+
 app.get('/', (req, res) => {
     res.status(200).send('<h1>Hello World</h1>')
 });
@@ -32,6 +40,38 @@ app.get('/', (req, res) => {
 app.get('/api/persons', (req, res) => {
     res.json(persons);
 });
+
+app.get('/api/persons/:id', (req, res) => {
+    const id = req.params.id
+    const person = persons.find(p => p.id === id);
+
+    if (!person) return res.status(404).end()
+
+    res.json(person);
+});
+
+// create  new entry
+app.post('/api/persons', (req, res) => {
+    const body = req.body;
+    if (!body.name || !body.number) return res.status(400).json({ error: 'name or number is missing'});
+
+    const duplicate = persons.find(p => p.name === body.name);
+    if (duplicate) return res.status(409).json({ error: "name already exist" });
+
+    const person = {
+        name: body.name,
+        number: body.number,
+        id: generateId(),
+    }
+
+    persons.concat(person);
+    res.status(201).json(person)
+});
+
+const generateId = () => {
+    const id = Math.floor(Math.random() * (500 - 5) + 5);
+    return String(id);
+};
 
 app.get('/info', (req, res) => {
     const date = new Date();
@@ -42,6 +82,13 @@ app.get('/info', (req, res) => {
         <p>${date}</p>
     </div>`)
 
+});
+
+app.delete('/api/persons/:id', (req, res) => {
+    const id = req.params.id;
+    persons = persons.filter(p => p.id !== id);
+
+    res.status(204).end();
 });
 
 app.listen(PORT, () => {
