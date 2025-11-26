@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-const { json } = require('stream/consumers');
+const cors = require('cors');
 const PORT = 3001;
 
 let persons = [
@@ -28,6 +28,7 @@ let persons = [
 ]
 
 app.use(express.json());
+app.use(cors());
 
 // define body token
 morgan.token('body', (req, res) => JSON.stringify(req.body));
