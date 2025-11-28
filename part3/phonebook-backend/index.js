@@ -2,9 +2,11 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const cors = require('cors');
+const Person = require('./models/person');
+require('dotenv').config();
 const PORT = process.env.PORT || 3001;
 
-let persons = [
+let people = [
     { 
       "id": "1",
       "name": "Arto Hellas", 
@@ -40,43 +42,40 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/persons', (req, res) => {
-    res.json(persons);
+    Person.find({}).then(persons => {
+        res.json(persons)
+    })
 });
 
 app.get('/api/persons/:id', (req, res) => {
     const id = req.params.id
-    const person = persons.find(p => p.id === id);
-
-    if (!person) return res.status(404).end()
-
-    res.json(person);
+    Person.findById(id).then(person => {
+        res.json(person)
+    });
 });
 
 // create  new entry
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', async (req, res) => {
     const body = req.body;
     if (!body.name || !body.number) return res.status(400).json({ error: 'name or number is missing'});
 
-    const duplicate = persons.find(p => p.name === body.name);
-    if (duplicate) return res.status(409).json({ error: "name already exist" });
+    const duplicate = await Person.find({name: body.name}).then(person => person);
+    if (duplicate.length > 0) return res.status(409).json({ error: "name already exist" });
 
-    const person = {
+    const person = new Person({
         name: body.name,
-        number: body.number,
-        id: generateId(),
-    }
+        number: body.number
+    });
 
-    persons.concat(person);
-    res.status(201).json(person)
+    person.save().then(savedPerson => {
+        res.json(savedPerson);
+    })
 });
 
-const generateId = () => {
-    const id = Math.floor(Math.random() * (500 - 5) + 5);
-    return String(id);
-};
 
 app.get('/info', (req, res) => {
     const date = new Date();
+    const persons = Person.find({}).then(persons => persons);
     const amount = persons.length;
     
     res.send(`<div>
@@ -88,9 +87,9 @@ app.get('/info', (req, res) => {
 
 app.delete('/api/persons/:id', (req, res) => {
     const id = req.params.id;
-    persons = persons.filter(p => p.id !== id);
-
-    res.status(204).end();
+    Person.findByIdAndDelete(id).then(() => {
+        res.status(204).end();
+    })
 });
 
 app.listen(PORT, () => {
