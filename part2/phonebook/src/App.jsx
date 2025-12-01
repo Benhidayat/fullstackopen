@@ -27,7 +27,7 @@ const App = () => {
   console.log('Render', persons)
 
   // show persons after search applied
-  const filteredPersons = persons.filter(person => {
+  const filteredPersons = persons?.filter(person => {
     return person.name.toLowerCase().startsWith(searchStr);
   });
 

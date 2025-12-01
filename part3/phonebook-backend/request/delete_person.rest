@@ -1,1 +1,2 @@
-DELETE https://phonebook-backend-ben.fly.dev/api/persons/1
+# DELETE https://phonebook-backend-ben.fly.dev/api/persons/1
+DELETE http://localhost:3001/api/persons/123

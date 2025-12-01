@@ -1,1 +1,2 @@
-GET https://phonebook-backend-ben.fly.dev/api/persons
+# GET https://phonebook-backend-ben.fly.dev/api/persons
+GET http://localhost:3001/api/persons
