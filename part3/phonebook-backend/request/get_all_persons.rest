@@ -1,2 +1,12 @@
-# GET https://phonebook-backend-ben.fly.dev/api/persons
+### GET https://phonebook-backend-ben.fly.dev/api/persons
+
 GET http://localhost:3001/api/persons
+
+### update a person
+PUT http://localhost:3001/api/persons/6929459874100d8c5507898c
+Content-Type: application/json
+
+{
+    "name": "Arto Hellas",
+    "number": "040-654321"
+}
