@@ -51,9 +51,12 @@ app.get("/api/persons", (req, res) => {
 
 app.get("/api/persons/:id", (req, res) => {
   const id = req.params.id;
-  Person.findById(id).then((person) => {
-    res.json(person);
-  });
+  Person.findById(id)
+    .then((person) => {
+      if (!person) return res.status(404).end();
+      res.json(person);
+    })
+    .catch((error) => next(error));
 });
 
 // create  new entry
