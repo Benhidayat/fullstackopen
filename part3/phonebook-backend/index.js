@@ -60,7 +60,7 @@ app.get("/api/persons/:id", (req, res) => {
 });
 
 // create  new entry
-app.post("/api/persons", async (req, res) => {
+app.post("/api/persons", async (req, res, next) => {
   const body = req.body;
   if (!body.name || !body.number)
     return res.status(400).json({ error: "name or number is missing" });
@@ -76,9 +76,12 @@ app.post("/api/persons", async (req, res) => {
     number: body.number,
   });
 
-  person.save().then((savedPerson) => {
-    res.json(savedPerson);
-  });
+  person
+    .save()
+    .then((savedPerson) => {
+      res.json(savedPerson);
+    })
+    .catch((error) => next(error));
 });
 
 app.get("/info", (req, res) => {
@@ -125,8 +128,10 @@ app.use(unknownEndpoint);
 const errorMiddleware = (err, req, res, next) => {
   console.error(err.message);
 
-  if (err.name === "castError")
+  if (err.name === "CastError")
     return res.status(400).send({ error: "malformed id" });
+  if (err.name === "ValidationError")
+    return res.status(400).json({ error: err.message });
   next(err);
 };
 
