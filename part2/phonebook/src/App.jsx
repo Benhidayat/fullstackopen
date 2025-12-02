@@ -100,6 +100,10 @@ const App = () => {
       .catch((error) => {
         console.log(error.response.data.error);
         setNotifMessage(error.response.data.error);
+        setErrSelector(true);
+        setTimeout(() => {
+          setNotifMessage(null);
+        }, 5000);
       });
   };
 

@@ -23,6 +23,10 @@ const personSchema = new mongoose.Schema({
   },
   number: {
     type: String,
+    minLength: 8,
+    validator: function (v) {
+      return /[a-z]{2,3}-[a-z]/.test(v);
+    },
     required: true,
   },
 });
