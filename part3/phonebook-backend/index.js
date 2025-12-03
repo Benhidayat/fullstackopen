@@ -1,45 +1,22 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const morgan = require("morgan");
-const cors = require("cors");
-const Person = require("./models/person");
-require("dotenv").config();
+const morgan = require('morgan');
+const cors = require('cors');
+const Person = require('./models/person');
+require('dotenv').config();
 const PORT = process.env.PORT || 3001;
 
-let people = [
-  {
-    id: "1",
-    name: "Arto Hellas",
-    number: "040-123456",
-  },
-  {
-    id: "2",
-    name: "Ada Lovelace",
-    number: "39-44-5323523",
-  },
-  {
-    id: "3",
-    name: "Dan Abramov",
-    number: "12-43-234345",
-  },
-  {
-    id: "4",
-    name: "Mary Poppendieck",
-    number: "39-23-6423122",
-  },
-];
-
-app.use(express.static("./dist"));
+app.use(express.static('./dist'));
 app.use(express.json());
 app.use(cors());
 
 // define body token
-morgan.token("body", (req, res) => JSON.stringify(req.body));
+morgan.token('body', (req, res) => JSON.stringify(req.body));
 app.use(
-  morgan(":method :url :status :res[content-length] - :response-time ms :body")
+  morgan(':method :url :status :res[content-length] - :response-time ms :body');
 );
 
-app.get("/", (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).send("<h1>Hello World</h1>");
 });
 
