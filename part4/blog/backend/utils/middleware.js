@@ -5,11 +5,12 @@ const reqLogger = (req, res, next) => {
     logger.info('Path', req.path);
     logger.info('Body', req.body);
     logger.info('---');
+    next();
 }
 
 // 404 endpoint
 const unknownEndpoint = (req, res) => {
-    res.staus(404).send({ error: 'Unknown endpoint '});
+    res.status(404).send({ error: 'Unknown endpoint '});
 }
 
 // error handler
