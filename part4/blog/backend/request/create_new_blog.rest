@@ -1,9 +1,10 @@
 POST http://localhost:3002/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0bWluIiwiaWQiOiI2OTNhNmE1ZDExZmNlYTNjOGM0NjkxNzMiLCJpYXQiOjE3NjU1MTY5OTksImV4cCI6MTc2NTYwMzM5OX0.khTCc_A9HiLCzZdZEIXOoA4S0Qr0kvHSwSJBjeMAPmI
 
 {
-    "title": "test blog",
-    "author": "Budi",
-    "url": "example.com",
-    "likes": 100
+    "title": "The Poo That Take The Pee",
+    "author": "Butters Stotch",
+    "url": "butters-stotch.com",
+    "likes": 1000
 }
