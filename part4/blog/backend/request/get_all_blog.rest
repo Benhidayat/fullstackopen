@@ -2,5 +2,5 @@ GET http://localhost:3002/api/blogs
 
 
 ### delete a blog
-DELETE http://localhost:3002/api/blogs/693ba8b9a20d083e630d51b5
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0bWluIiwiaWQiOiI2OTNhNmE1ZDExZmNlYTNjOGM0NjkxNzMiLCJpYXQiOjE3NjU1MTY5OTksImV4cCI6MTc2NTYwMzM5OX0.khTCc_A9HiLCzZdZEIXOoA4S0Qr0kvHSwSJBjeMAPmI
+DELETE http://localhost:3002/api/blogs/693d29e7c4e06b484b5b8a81
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0bWluIiwiaWQiOiI2OTNhNmE1ZDExZmNlYTNjOGM0NjkxNzMiLCJpYXQiOjE3NjU2MTY0NjIsImV4cCI6MTc2NTcwMjg2Mn0.gzCoGV9eLwYIIu9oidR9qItzL9sodQw4WkE8WWWclYE

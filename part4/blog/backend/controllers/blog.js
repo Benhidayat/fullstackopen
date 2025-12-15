@@ -18,6 +18,7 @@ blogRouter.post('/', middleware.tokenExtractor, middleware.userExtractor, async 
     const { title, author, url, likes } = req.body;
 
     const { decodedToken } = req;
+    
     if (!decodedToken.id) return res.status(401).json({ error: 'token invalid' });
 
     const { user } = req;

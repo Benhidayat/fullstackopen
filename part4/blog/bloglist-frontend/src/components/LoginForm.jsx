@@ -5,10 +5,10 @@ const LoginForm = ({
     setUsername,
     password,
     setPassword,
-    handleLogin
+    handleLogin,
 }) => {
     return (
-        <div>
+        <div className='login'>
             <h3>Login to application</h3>
             <form onSubmit={handleLogin}>
                 <div>

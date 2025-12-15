@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
-import Notification from './components/Notification';
 import blogService from './services/blogs';
 import LoginForm from './components/LoginForm';
 import loginService from './services/login';
+import BlogForm from './components/BlogForm';
+import Notifications from './components/Notifications';
+import Togglable from './components/Togglable';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [errMsg, setErrMsg] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
+  const [notifMsg, setNotifMsg] = useState(null);
+  const [notifSelector, setNotifSelector] = useState(true);
 
   // render all blogs at the first render
   useEffect(() => {
@@ -29,6 +32,18 @@ const App = () => {
     }
   }, []);
 
+  // create new blogs
+  const addNewBlog = async (blogObj) => {
+    const res = await blogService.createBlog(blogObj);
+    console.log(res);
+    setBlogs(blogs.concat(res));
+    setNotifMsg(`${res.title} by ${res.author} has been added to the list`);
+    setNotifSelector(true);
+    setTimeout(() => {
+      setNotifMsg('');
+    }, 5000);
+  };
+
   // login
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -42,13 +57,39 @@ const App = () => {
       // set token for jwt
       blogService.setToken(user.token);
       setUser(user);
+      setNotifMsg(`${user.name} is logged`);
+      setNotifSelector(true);
+      setTimeout(() => {
+        setNotifMsg(null);
+      }, 5000);
       setUsername('');
       setPassword('');
     } catch (error) {
-      setErrMsg('Wrong credentials');
-      setTimeout(() => {
-        setErrMsg(null);
-      }, 5000);
+      if (!error?.response) {
+        setNotifMsg('No server response');
+        setNotifSelector(false);
+        setTimeout(() => {
+          setNotifMsg(null);
+        }, 5000);
+      } else if (error.response?.status === 400) {
+        setNotifMsg('username and password are required');
+        setNotifSelector(false);
+        setTimeout(() => {
+          setNotifMsg(null);
+        }, 5000);
+      } else if ( error.response?.status === 401) {
+        setNotifMsg('Wrong credentials');
+        setNotifSelector(false);
+        setTimeout(() => {
+          setNotifMsg(null);
+        }, 5000);
+      } else {
+        setNotifMsg('login failed');
+        setNotifSelector(false);
+        setTimeout(() => {
+          setNotifMsg(null);
+        }, 5000);
+      }
 
     }
   }
@@ -60,29 +101,38 @@ const App = () => {
     setUser(null);
   };
 
-  if (user === null) {
+  // blog form
+  const blogForm = () => {
     return (
-      <LoginForm
-        username={username}
-        setUsername={setUsername}
-        password={password}
-        setPassword={setPassword}
-        handleLogin={handleLogin}
-      />
+      <Togglable buttonLabel='create new blog'>
+        <BlogForm createBlog={addNewBlog} />
+      </Togglable>
     )
-  }
+  };
 
   return (
     <div>
       <h2>blogs</h2>
-      <div>
-        <p>{user.name} logged in</p>
-        <button onClick={handleLogout}>logout</button>
-      </div>
-      <Notification message={errMsg} />
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
+      <Notifications message={notifMsg} notifSelector={notifSelector} />
+
+      {user
+        ?  <div>
+            <div className='logged'>
+              <p>{user.name} logged in</p>
+              <button onClick={handleLogout}>logout</button>
+            </div>
+            {blogForm()}
+            {blogs.map(blog =>
+              <Blog key={blog.id} blog={blog} />
+            )}
+          </div>
+        : <LoginForm
+            username={username}
+            setUsername={setUsername}
+            password={password}
+            setPassword={setPassword}
+            handleLogin={handleLogin}
+          />}
     </div>
   )
 }
