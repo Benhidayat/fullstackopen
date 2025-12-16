@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import Blog from './components/Blog';
+import BlogList from './components/BlogList';
 import blogService from './services/blogs';
 import LoginForm from './components/LoginForm';
 import loginService from './services/login';
@@ -51,9 +51,7 @@ const App = () => {
   // update blog
   const updateBlog = async (blogObj) => {
     try {
-      console.log('blog obj', blogObj);
       const res = await blogService.updateBlog(blogObj.id, blogObj);
-      console.log('updateted blog', res);
       setBlogs(prevBlogs => {
         const updated = prevBlogs.map(blog => blog.id === res.id ? res : blog);
         return updated;
@@ -153,9 +151,7 @@ const App = () => {
               <button onClick={handleLogout}>logout</button>
             </div>
             {blogForm()}
-            {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
-            )}
+            <BlogList blogs={blogs} updateBlog={updateBlog} />
           </div>
         : <LoginForm
             username={username}

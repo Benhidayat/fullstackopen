@@ -6,23 +6,29 @@ const Blog = ({blog, updateBlog }) => {
 
   const hideWHenVisible = { display: visible ? 'none' : '' };
   const showWhenVisible = { display: visible ? '' : 'none' };
+
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
+  }
+
   
   const toggleVisibility = () => {
     setVisible(!visible);
   };
 
   const increaseLikes = () => {
-     console.log(likes);
     const updatedLikes = likes + 1;
-    console.log('updatedLikes', updatedLikes)
     setLikes(updatedLikes);
     const blogObj = {...blog, likes: updatedLikes };
-    console.log('blogobj inside blog', blogObj);
     updateBlog(blogObj);
   };
 
   return (
-    <div>
+    <div style={blogStyle}>
       <div style={hideWHenVisible}>
         {blog.title} {blog.author} <button onClick={toggleVisibility}>show</button>
       </div>
