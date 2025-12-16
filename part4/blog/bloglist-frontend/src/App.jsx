@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import LoginForm from './components/LoginForm';
@@ -8,12 +8,16 @@ import Notifications from './components/Notifications';
 import Togglable from './components/Togglable';
 
 const App = () => {
+  // state
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const [notifMsg, setNotifMsg] = useState(null);
   const [notifSelector, setNotifSelector] = useState(true);
+
+  // ref hook
+  const blogFormRef = useRef();
 
   // render all blogs at the first render
   useEffect(() => {
@@ -34,8 +38,8 @@ const App = () => {
 
   // create new blogs
   const addNewBlog = async (blogObj) => {
+    blogFormRef.current.toggleVisibility();
     const res = await blogService.createBlog(blogObj);
-    console.log(res);
     setBlogs(blogs.concat(res));
     setNotifMsg(`${res.title} by ${res.author} has been added to the list`);
     setNotifSelector(true);
@@ -104,7 +108,7 @@ const App = () => {
   // blog form
   const blogForm = () => {
     return (
-      <Togglable buttonLabel='create new blog'>
+      <Togglable buttonLabel='create new blog' ref={blogFormRef}>
         <BlogForm createBlog={addNewBlog} />
       </Togglable>
     )
