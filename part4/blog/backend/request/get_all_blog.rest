@@ -4,3 +4,11 @@ GET http://localhost:3002/api/blogs
 ### delete a blog
 DELETE http://localhost:3002/api/blogs/693d29e7c4e06b484b5b8a81
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF0bWluIiwiaWQiOiI2OTNhNmE1ZDExZmNlYTNjOGM0NjkxNzMiLCJpYXQiOjE3NjU2MTY0NjIsImV4cCI6MTc2NTcwMjg2Mn0.gzCoGV9eLwYIIu9oidR9qItzL9sodQw4WkE8WWWclYE
+
+### update a blog
+PUT http://localhost:3002/api/blogs/693d2a69c4e06b484b5b8a8a
+Content-Type: application/json
+
+{
+    "likes": 5
+}

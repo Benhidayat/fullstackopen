@@ -48,6 +48,33 @@ const App = () => {
     }, 5000);
   };
 
+  // update blog
+  const updateBlog = async (blogObj) => {
+    try {
+      console.log('blog obj', blogObj);
+      const res = await blogService.updateBlog(blogObj.id, blogObj);
+      console.log('updateted blog', res);
+      setBlogs(prevBlogs => {
+        const updated = prevBlogs.map(blog => blog.id === res.id ? res : blog);
+        return updated;
+      });
+      setNotifMsg(`${res.title} blog has been updated`);
+      setNotifSelector(true);
+      setTimeout(() => {
+        setNotifMsg(null);
+      }, 5000);
+    } catch (error) {
+      if (error?.response?.status) {
+        setNotifMsg(error.response.status);
+        setNotifSelector(false);
+        setTimeout(() => {
+          setNotifMsg(null);
+        }, 5000);
+      }
+    }
+
+  }
+
   // login
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -127,7 +154,7 @@ const App = () => {
             </div>
             {blogForm()}
             {blogs.map(blog =>
-              <Blog key={blog.id} blog={blog} />
+              <Blog key={blog.id} blog={blog} updateBlog={updateBlog}/>
             )}
           </div>
         : <LoginForm

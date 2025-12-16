@@ -55,14 +55,18 @@ blogRouter.delete('/:id',[middleware.tokenExtractor, middleware.userExtractor], 
 
 blogRouter.put('/:id', async (req, res) => {
     const { id } = req.params;
-    const { likes } = req.body;
+    const { title, author, url, likes } = req.body;
 
     const blog = await Blog.findById(id);
     if(!blog) return res.status(404).end();
 
+    blog.title = title;
+    blog.author = author;
+    blog.url = url;
     blog.likes = likes;
 
     const updatedBlog = await blog.save();
+    await updatedBlog.populate('user', { username: 1, name: 1 });
     res.json(updatedBlog);
 ;});
 
