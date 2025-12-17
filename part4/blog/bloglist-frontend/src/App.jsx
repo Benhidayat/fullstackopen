@@ -73,6 +73,29 @@ const App = () => {
 
   }
 
+  // delete blog
+  const removeBlog = async (blogToDelete) => {
+    const confirm = window.confirm(`Remove blog ${blogToDelete.title} by ${blogToDelete.author}?`);
+    if (confirm) {
+      try {
+        await blogService.deleteBlog(blogToDelete.id);
+        const updatedBlog = blogs.filter(blog => blog.id !== blogToDelete.id);
+        setBlogs(updatedBlog);
+        setNotifMsg(`${blogToDelete.title} by ${blogToDelete.author} has been deleted.`);
+        setNotifSelector(true);
+        setTimeout(() => {
+          setNotifMsg(null);
+        }, 5000);
+      } catch (error) {
+        setNotifMsg('failed to delete a blog');
+        setNotifSelector(false);
+        setTimeout(() => {
+          setNotifMsg(null)
+        }, 5000);
+      }
+    }
+  }
+
   // login
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -151,7 +174,7 @@ const App = () => {
               <button onClick={handleLogout}>logout</button>
             </div>
             {blogForm()}
-            <BlogList blogs={blogs} updateBlog={updateBlog} />
+            <BlogList blogs={blogs} updatedBlogs={updateBlog} removeBlog={removeBlog}/>
           </div>
         : <LoginForm
             username={username}

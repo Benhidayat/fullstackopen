@@ -29,21 +29,20 @@ const errorHandler = (err, req, res, next) => {
 
 // jwt handler
 const tokenExtractor = (req, res, next) => {
+    
     const authorization = req.get('authorization');
     if (!authorization?.startsWith('Bearer ')) {
+        
         return res.status(401).json({ error: 'unauthorized'});
     }
+    
 
-    try {
-        const token = authorization.replace('Bearer ', '');
-            
-        const decodedToken = jwt.verify(token, process.env.SECRET);
-        // assign decoded object to request header to use eveywhere
-        req.decodedToken = decodedToken;
-        next();
-    } catch (error) {
-        return res.status(401).json({ error: 'token invalid or expired'});
-    }
+    const token = authorization.replace('Bearer ', '');        
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    // assign decoded object to request header to use eveywhere
+    req.decodedToken = decodedToken;
+    next();
+   
 };
 
 const userExtractor = async (req, res, next) => {

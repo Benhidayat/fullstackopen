@@ -43,6 +43,7 @@ blogRouter.delete('/:id',[middleware.tokenExtractor, middleware.userExtractor], 
     const { user } = req;
 
     const blog = await Blog.findById(id);
+    console.log('req user', user);
    
     // make sure the blog.user and decodedToken.id have the same data type
     if (!blog.user.toString() === user.id.toString()) return res.status(403).json({ error: 'forbidden'});
