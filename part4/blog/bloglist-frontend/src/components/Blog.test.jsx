@@ -15,6 +15,15 @@ describe('Blog component tests', () => {
     });
 
     it('display blog\'s title and author only', () => {
-        screen.getByTestId('hide')
-    })
+        screen.getByTestId('hide');
+    });
+
+    it('expands the blog info after clicking show button', async () => {
+        const user = userEvent.setup();
+        const showButton = screen.getByText('show');
+        await user.click(showButton);
+
+        const element = screen.getByTestId('show');
+        expect(element).toBeVisible();
+    });
 });
