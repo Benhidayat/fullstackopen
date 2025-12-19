@@ -23,8 +23,8 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
-  }, [])
+    );
+  }, []);
 
   // make login persistance event after reloading the page
   useEffect(() => {
@@ -71,7 +71,7 @@ const App = () => {
       }
     }
 
-  }
+  };
 
   // delete blog
   const removeBlog = async (blogToDelete) => {
@@ -94,7 +94,7 @@ const App = () => {
         }, 5000);
       }
     }
-  }
+  };
 
   // login
   const handleLogin = async (e) => {
@@ -144,7 +144,7 @@ const App = () => {
       }
 
     }
-  }
+  };
 
   // logout
   const handleLogout = () => {
@@ -176,15 +176,15 @@ const App = () => {
             {blogForm()}
             <BlogList blogs={blogs} updatedBlogs={updateBlog} removeBlog={removeBlog}/>
           </div>
-        : <LoginForm
-            username={username}
-            setUsername={setUsername}
-            password={password}
-            setPassword={setPassword}
-            handleLogin={handleLogin}
-          />}
+        :<LoginForm
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
+        />}
     </div>
   )
-}
+};
 
-export default App
+export default App;
