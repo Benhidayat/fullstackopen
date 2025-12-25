@@ -49,7 +49,7 @@ const App = () => {
   };
 
   // update blog
-  const updateBlog = async (blogObj) => {
+  const updateTheBlog = async (blogObj) => {
     try {
       const res = await blogService.updateBlog(blogObj.id, blogObj);
       setBlogs(prevBlogs => {
@@ -130,7 +130,7 @@ const App = () => {
           setNotifMsg(null);
         }, 5000);
       } else if ( error.response?.status === 401) {
-        setNotifMsg('Wrong credentials');
+        setNotifMsg('wrong credentials');
         setNotifSelector(false);
         setTimeout(() => {
           setNotifMsg(null);
@@ -156,7 +156,7 @@ const App = () => {
   // blog form
   const blogForm = () => {
     return (
-      <Togglable buttonLabel='create new blog' ref={blogFormRef}>
+      <Togglable buttonLabel='new blog' ref={blogFormRef}>
         <BlogForm createBlog={addNewBlog} />
       </Togglable>
     )
@@ -174,7 +174,7 @@ const App = () => {
               <button onClick={handleLogout}>logout</button>
             </div>
             {blogForm()}
-            <BlogList blogs={blogs} updatedBlogs={updateBlog} removeBlog={removeBlog}/>
+            <BlogList blogs={blogs} user={user} updateBlog={updateTheBlog} removeBlog={removeBlog}/>
           </div>
         :<LoginForm
           username={username}
