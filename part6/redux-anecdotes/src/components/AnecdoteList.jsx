@@ -14,12 +14,14 @@ const Anecdote = ({ anecdote, vote }) => {
 };
 
 const AnecdoteList = () => {
-    const anecdotes = useSelector(state => state);
+    const anecdotes = useSelector(({ anecdotes, filter}) => {
+        return anecdotes.filter(n => n.content.toLowerCase().includes(filter.toLowerCase()));
+    });
+    
     const dispatch = useDispatch();
 
     return (
         <div>
-            <h2>Anecdotes</h2>
             {anecdotes.sort((a, b) => a.votes < b.votes ? 1 : -1).map(n => (
                 <Anecdote key={n.id} anecdote={n} vote={() => dispatch(voteAnecdote(n.id))} />
             ))}
