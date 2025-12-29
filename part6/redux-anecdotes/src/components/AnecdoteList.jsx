@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { voteAnecdote } from "../reducers/anecdoteReducer";
+import { createNotification, removeNotif } from "../reducers/notifReducer";
 
 const Anecdote = ({ anecdote, vote }) => {
     return (
@@ -20,10 +21,18 @@ const AnecdoteList = () => {
     
     const dispatch = useDispatch();
 
+    const handleVote = (anecdote) => {
+        dispatch(voteAnecdote(anecdote.id));
+        dispatch(createNotification(anecdote.content))
+        setTimeout(() => {
+            dispatch(removeNotif());
+        }, 5000)
+    };
+
     return (
         <div>
             {anecdotes.sort((a, b) => a.votes < b.votes ? 1 : -1).map(n => (
-                <Anecdote key={n.id} anecdote={n} vote={() => dispatch(voteAnecdote(n.id))} />
+                <Anecdote key={n.id} anecdote={n} vote={() => handleVote(n)} />
             ))}
         </div>
     )
