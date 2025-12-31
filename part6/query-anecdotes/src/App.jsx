@@ -8,10 +8,12 @@ const App = () => {
     console.log('vote')
   }
 
+  // initial fethcing
   const result = useQuery({
     queryKey: ['anecdotes'],
     queryFn: getAllAnecdotes,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    retry: 1
   });
 
   if (result.isLoading) {
@@ -28,6 +30,8 @@ const App = () => {
 
   const anecdotes = result.data;
 
+  console.log(anecdotes)
+
   return (
     <div>
       <h3>Anecdote app</h3>
@@ -35,7 +39,7 @@ const App = () => {
       <Notification />
       <AnecdoteForm />
 
-      {anecdotes.map((anecdote) => (
+      {anecdotes?.map((anecdote) => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
           <div>
