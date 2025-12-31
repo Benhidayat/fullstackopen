@@ -26,3 +26,20 @@ export const createAnecdote = async (content) => {
         throw new Error('anecdote service not available due to problems in server');
     }
 };
+
+export const updateAnecdote = async (anecdote) => {
+    const options = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(anecdote)
+    };
+
+    try {
+        const res = await fetch(`${BASEURL}/${anecdote.id}`, options);
+        if (!res.ok) throw new Error('Failed to update anecdote');
+        return res.json();
+
+    } catch (error) {
+        throw new Error('anecdote service not available due to problems in server');
+    }
+};
