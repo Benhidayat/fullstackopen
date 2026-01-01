@@ -1,14 +1,10 @@
 const BASEURL = 'http://localhost:3001/anecdotes';
 
 export const getAllAnecdotes = async () => {
-    try {
-        const res = await fetch(BASEURL);
-        if(!res.ok) throw new Error('Failed to fetch anecdotes');
-        return await res.json();
 
-    } catch (error) {
-        throw new Error('anecdote service not available due to problems in server');
-    }
+    const res = await fetch(BASEURL);
+    if(!res.ok) throw new Error('Failed to fetch anecdotes');
+    return await res.json();
 };
 
 export const createAnecdote = async (content) => {
@@ -18,14 +14,14 @@ export const createAnecdote = async (content) => {
         body: JSON.stringify({ content, votes: 0 })
     };
 
-    try {
-        const res = await fetch(BASEURL, options);
-        if (!res.ok) throw new Error('Failed to create new anecdote');
-        return res.json();
-    } catch (error) {
-        throw new Error('anecdote service not available due to problems in server');
+
+    const res = await fetch(BASEURL, options);
+    if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error);
     }
-};
+    return res.json();    
+}
 
 export const updateAnecdote = async (anecdote) => {
     const options = {
@@ -34,12 +30,7 @@ export const updateAnecdote = async (anecdote) => {
         body: JSON.stringify(anecdote)
     };
 
-    try {
-        const res = await fetch(`${BASEURL}/${anecdote.id}`, options);
-        if (!res.ok) throw new Error('Failed to update anecdote');
-        return res.json();
-
-    } catch (error) {
-        throw new Error('anecdote service not available due to problems in server');
-    }
+    const res = await fetch(`${BASEURL}/${anecdote.id}`, options);
+    if (!res.ok) throw new Error('Failed to update anecdote');
+    return res.json();
 };
