@@ -72,11 +72,17 @@ const CreateNew = (props) => {
       info: info.value,
       votes: 0
     })
-    content.setValue('');
-    author.setValue('');
-    info.setValue('');
+    content.reset();
+    author.reset();
+    info.reset();
     navigate('/');
   }
+
+  const handleReset = () => {
+    content.reset();
+    author.reset();
+    info.reset();
+  };
 
   return (
     <div>
@@ -95,6 +101,7 @@ const CreateNew = (props) => {
           <input name='info' value={info.value} type={info.type} onChange={info.onChange} />
         </div>
         <button>create</button>
+        <button type='button' onClick={handleReset}>reset</button>
       </form>
     </div>
   )
