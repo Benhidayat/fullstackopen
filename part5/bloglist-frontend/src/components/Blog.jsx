@@ -16,7 +16,6 @@ const Blog = ({blog, user, updateBlog, removeBlog }) => {
   }
 
 
-  console.log('a blog details', blog);
   const toggleVisibility = () => {
     setVisible(!visible);
   };
@@ -34,10 +33,10 @@ const Blog = ({blog, user, updateBlog, removeBlog }) => {
 
   return (
     <div data-testid='blog' style={blogStyle}>
-      <div style={hideWHenVisible}>
+      <div style={hideWHenVisible} data-testId='hide'>
         {blog.title} {blog.author} <button onClick={toggleVisibility}>show</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} data-testId='show'>
         {blog.title} {blog.author} <button onClick={toggleVisibility}>hide</button>
         <p>{blog.url} </p>
         <p>{blog.likes}<button onClick={increaseLikes}>like</button> </p>

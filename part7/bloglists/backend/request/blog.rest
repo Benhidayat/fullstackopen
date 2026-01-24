@@ -1,0 +1,17 @@
+### get all blogs
+GET http://localhost:3001/api/blogs
+
+### create new blog
+POST  http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VuYW1lIjoiYnVkaSIsImlkIjoiNjk1ZjUyNmMzZTYxM2JjM2UxOThmNmI5IiwiaWF0IjoxNzY3OTQxMzQ1fQ.lGblcY4WjENfhL1v5PO9PvTmSaVrzBKpaVGNQ6E_vgs
+
+{
+    "title": "test blog 3",
+    "author": "budi",
+    "url": "example.com"
+}
+
+### delete blog
+DELETE http://localhost:3001/api/blogs/696096c3e65192d916de9fe7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VuYW1lIjoiYnVkaSIsImlkIjoiNjk1ZjUyNmMzZTYxM2JjM2UxOThmNmI5IiwiaWF0IjoxNzY3OTQ3Nzk4fQ.99DJkVvAH3lCqQraDyx_bRtATGsFsPT9IerroJDeKcE

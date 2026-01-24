@@ -1,0 +1,37 @@
+*, *::after, *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin-inline: 1rem;
+    margin-block: 2rem;
+}
+
+.blogform div {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    margin-block-end: .5rem;
+}
+
+.green-msg,
+.red-msg {
+    background-color: lightgrey;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.green-msg {
+    color: green;
+}
+
+.red-msg {
+    color: red;
+}

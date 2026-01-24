@@ -8,7 +8,6 @@ const blogRouter = Router();
 
 blogRouter.get('/', async (req, res) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
-    const { decodedToken } = req;
     res.json(blogs);
     
 });
